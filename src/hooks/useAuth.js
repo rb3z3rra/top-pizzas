@@ -1,15 +1,22 @@
+// disponibiliza informações para o contexto
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUserApi, getUserById } from "../services/authServices";
+import api from "../services/api";
 
 const useAuth = () => {
   const navigate = useNavigate();
   const [userLogged, setUserLogged] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userFull, setUserFull] = useState({});
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
     if (userInfo) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`; // pega o token do localStorage para autorização jtw
+      findUserById(userInfo.userId);
       setUserLogged(true);
     }
 
@@ -17,13 +24,13 @@ const useAuth = () => {
   }, []);
 
   const loginUser = async (inputValues) => {
-    const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inputValues),
-    });
-    const data = await response.json();
+    const response = await loginUserApi(inputValues);
+    const data = await response.data;
     localStorage.setItem("userInfo", JSON.stringify(data));
+    //setar configurações padrão para instancia da api: Authoriation - Bearer - token
+    api.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${response.data.token}`;
     navigate("/");
     setUserLogged(true);
   };
@@ -33,7 +40,13 @@ const useAuth = () => {
     localStorage.clear();
     navigate("/login");
   };
-  return { userLogged, loading, loginUser, logoutUser };
+
+  const findUserById = async (userId) => {
+    const response = await getUserById(userId);
+    setUserFull(response.data);
+  };
+
+  return { userLogged, userFull, loading, loginUser, logoutUser };
 };
 
 export default useAuth;

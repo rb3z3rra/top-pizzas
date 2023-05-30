@@ -1,12 +1,12 @@
-import React from 'react'
-import ProductList from '../../components/ProductList'
+import React from "react";
+import ProductList from "../../components/ProductList";
 
 const Cardapio = () => {
   return (
-    <section className='h-auto'>
-<ProductList/>
-    </section>
-  )
-}
+    <main className="max-w-screen-xl mx-auto h-full">
+      <ProductList />
+    </main>
+  );
+};
 
-export default Cardapio
+export default Cardapio;

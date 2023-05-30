@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Product from "../Product";
-import ProductsMock from "../../pages/mocks/Products";
+import { findAllProducts } from "../../services/productServices";
 
 const ProductList = () => {
   const [categoriaTab, setCategoriaTab] = useState("Pizzas");
-  const [products] = useState(ProductsMock);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  const getAllProducts = async () => {
+    const response = await findAllProducts();
+    setProducts(response.data);
+  };
 
   return (
-    <section className="my-12 max-w-screen-xl mx-auto px-3">
+    <main className="my-12 max-w-screen-xl mx-auto px-3">
       {/* menu de categoria */}
       <div className="flex items-center justify-center space-x-6">
         <p
@@ -47,7 +56,7 @@ const ProductList = () => {
           <Product key={product._id} product={product} />
         ))}
       </div>
-    </section>
+    </main>
   );
 };
 

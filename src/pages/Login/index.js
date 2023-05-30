@@ -1,9 +1,8 @@
-import React, { useContext ,useState } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import login_logo from "../../assets/login-logo.png"; 
+import login_logo from "../../assets/login-logo.png";
 
 const Login = () => {
-
   const { loginUser } = useContext(AuthContext);
 
   const [inputValues, setInputValues] = useState({
@@ -20,21 +19,24 @@ const Login = () => {
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    console.log("login")
 
     loginUser(inputValues);
   };
 
   return (
-    <section className="w-full h-auto">
+    <section className="w-full h-screen">
       <div className="flex flex-col py-9 items-center">
         <form
           onSubmit={handleOnSubmit}
           className="bg-slate-400 w-96 mt-6 p-4 rounded-lg shadow-lg"
         >
-        <div className="w-full mb-8">
-        <img src={login_logo} alt="Logo tipo app" className="w-36 mx-auto" />
-        </div>
+          <div className="w-full mb-8">
+            <img
+              src={login_logo}
+              alt="Logo tipo app"
+              className="w-36 mx-auto"
+            />
+          </div>
           <div className="flex flex-col space-y-6">
             <input
               onChange={handleOnChangeValue}

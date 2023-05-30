@@ -4,7 +4,8 @@ import useAuth from "../hooks/useAuth";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const { userLogged, loading, loginUser, logoutUser, getUser } = useAuth();
+  const { userLogged, loading, loginUser, logoutUser, getUser, userFull } =
+    useAuth();
 
   if (loading) {
     // se loading ainda não false fica carregando
@@ -12,7 +13,9 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ userLogged, loginUser, logoutUser, getUser }}>
+    <AuthContext.Provider
+      value={{ userLogged, loginUser, logoutUser, getUser, userFull }}
+    >
       {children}
     </AuthContext.Provider>
   );
